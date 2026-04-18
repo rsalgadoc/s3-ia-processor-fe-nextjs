@@ -23,3 +23,12 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 ## License
 
 This library is licensed under the MIT-0 License. See the LICENSE file.
+
+
+## Run locally
+
+Windows PowerShell 
+
+```shell
+$env:MY_CUSTOM_BUCKET_ARN="arn:aws:s3:::bucket-name"; echo "ARN cargado: $env:MY_CUSTOM_BUCKET_ARN"; npx ampx sandbox
+```
