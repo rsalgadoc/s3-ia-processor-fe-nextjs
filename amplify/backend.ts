@@ -9,6 +9,14 @@ const backend = defineBackend({
   data,
 });
 
+// Accedemos al recurso L1 del User Pool de Cognito
+const { cfnUserPool } = backend.auth.resources.cfnResources;
+
+// Configuramos para que solo los administradores puedan crear usuarios
+cfnUserPool.adminCreateUserConfig = {
+  allowAdminCreateUserOnly: true,
+};
+
 // Leemos la variable de entorno del sistema
 const BUCKET_ARN = process.env.MY_CUSTOM_BUCKET_ARN;
 
