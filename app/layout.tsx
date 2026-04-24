@@ -1,28 +1,40 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type React from "react"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
+import { Toaster } from "@/components/ui/toaster"
 import ConfigureAmplify from './components/ConfigureAmplify';
-import AuthenticatorWrapper from "./AuthenticatorWrapper";
-import "@aws-amplify/ui-react/styles.css";
-import "./app.css";
+import AuthenticatorWrapper from "./AuthenticatorWrapper"
 
-const inter = Inter({ subsets: ["latin"] });
+
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "S3 Image & Document Processor",
-  description: "Procesador de imágenes y documentos con IA nativa",
-};
+  title: "AWS Serverless Projects",
+  description: "Soluciones serverless en AWS"
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
       <body className={inter.className}>
         <ConfigureAmplify />
-        <AuthenticatorWrapper>{children}</AuthenticatorWrapper>
+        <AuthenticatorWrapper>
+          <SidebarProvider>
+            <div className="flex min-h-screen w-full">
+              <AppSidebar />
+              <main className="flex-1 overflow-auto bg-background">{children}</main>
+            </div>
+          </SidebarProvider>
+          <Toaster />
+        </AuthenticatorWrapper>
       </body>
     </html>
-  );
+  )
 }
