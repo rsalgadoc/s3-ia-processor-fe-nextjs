@@ -3,6 +3,7 @@
 import { StorageManager } from '@aws-amplify/ui-react-storage';
 import Link from 'next/link';
 import { Topbar } from "@/components/topbar"
+import { Button } from "@/components/ui/button"
 import '@aws-amplify/ui-react/styles.css';           // Estilos base de Amplify UI
 
 export default function UploadPage() {
@@ -41,11 +42,9 @@ export default function UploadPage() {
         </p>
       </div>
       <div style={{ marginTop: '20px' }}>
-        <Link href="/">
-          <button style={{ width: '100%', textAlign: 'center' }}>
-            Back to Home
-          </button>
-        </Link>
+        <Button asChild>
+          <Link href="/">Back to Home</Link>
+        </Button>
       </div>
     </div>
   );

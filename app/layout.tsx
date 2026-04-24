@@ -29,7 +29,17 @@ export default function RootLayout({
           <SidebarProvider>
             <div className="flex min-h-screen w-full">
               <AppSidebar />
-              <main className="flex-1 overflow-auto bg-background">{children}</main>
+              <main className="flex-1">
+                {/* BARRA SUPERIOR PARA MÓVIL */}
+                <header className="flex h-16 items-center gap-4 border-b px-4 md:hidden">
+                  <SidebarTrigger />
+                  <span className="font-semibold">AWS Serverless Projects</span>
+                </header>
+                
+                <div className="p-4 md:p-6">
+                  {children}
+                </div>
+              </main>
             </div>
           </SidebarProvider>
           <Toaster />

@@ -1,7 +1,7 @@
 "use client"
 
 import { BarChart3, Contact, Home, Settings, Zap, CheckSquare, DollarSign, CloudUpload } from "lucide-react"
-
+import { useEffect } from "react" 
 import {
   Sidebar,
   SidebarContent,
@@ -12,6 +12,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
@@ -57,6 +58,14 @@ const menuItems = [
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const { setOpenMobile, isMobile } = useSidebar() // Obtén estas funciones
+
+  // Cierra el menú automáticamente cada vez que cambia la ruta
+  useEffect(() => {
+    if (isMobile) {
+      setOpenMobile(false)
+    }
+  }, [pathname, isMobile, setOpenMobile])
 
   return (
      <Sidebar variant="sidebar" collapsible="icon" className="border-r">
