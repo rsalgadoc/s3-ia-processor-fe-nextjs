@@ -19,9 +19,14 @@ cfnUserPool.adminCreateUserConfig = {
 
 // Leemos la variable de entorno del sistema
 const BUCKET_ARN = process.env.MY_CUSTOM_BUCKET_ARN;
+const OUTPUT_BUCKET_ARN = process.env.MY_CUSTOM_OUTPUT_BUCKET_ARN;
 
 if (!BUCKET_ARN) {
   throw new Error("La variable de entorno MY_CUSTOM_BUCKET_ARN no está definida");
+}
+
+if (!OUTPUT_BUCKET_ARN) {
+  throw new Error("La variable de entorno MY_CUSTOM_OUTPUT_BUCKET_ARN no está definida");
 }
 
 // === TU BUCKET EXISTENTE ===
@@ -29,6 +34,11 @@ const customBucketStack = backend.createStack('custom-bucket-stack');
 
 const existingBucket = Bucket.fromBucketAttributes(customBucketStack, 'MyExistingBucket', {
   bucketArn: BUCKET_ARN,
+  region: 'us-east-1',                             // ← tu región
+});
+
+const outputBucket = Bucket.fromBucketAttributes(customBucketStack, 'MyExistingBucket2', {
+  bucketArn: OUTPUT_BUCKET_ARN,
   region: 'us-east-1',                             // ← tu región
 });
 
@@ -46,6 +56,18 @@ backend.addOutput({
           'public/*': {
             guest: ['get', 'list'],                    // lectura pública
             authenticated: ['get', 'list', 'write', 'delete'], // usuarios logueados
+          },
+          // Puedes agregar más rutas (protected/, private/, etc.)
+        },
+      },
+      {
+        name: 'output-bucket-externo', // Segundo alias
+        bucket_name: outputBucket.bucketName,
+        aws_region: outputBucket.env.region,
+        paths: {
+          'resultados/public/*': {
+            guest: ['get', 'list'],                    // lectura pública
+            authenticated: ['get', 'list'], // usuarios logueados
           },
           // Puedes agregar más rutas (protected/, private/, etc.)
         },
@@ -68,6 +90,14 @@ const authPolicy = new Policy(customBucketStack, 'CustomBucketAuthPolicy', {
       resources: [existingBucket.bucketArn],
       conditions: {
         StringLike: { 's3:prefix': ['public/', 'public/*'] },
+      },
+    }),
+    new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ['s3:ListBucket'],
+      resources: [outputBucket.bucketArn],
+      conditions: {
+        StringLike: { 's3:prefix': ['resultados/public/', 'resultados/public/*'] },
       },
     }),
   ],

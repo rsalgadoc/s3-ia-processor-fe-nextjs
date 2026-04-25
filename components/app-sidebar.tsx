@@ -1,6 +1,6 @@
 "use client"
 
-import { Cloud, Contact, Home, Settings, Zap, CheckSquare, DollarSign, CloudUpload } from "lucide-react"
+import { Cloud, Contact, Home, Settings, Zap, CheckSquare, DollarSign, CloudUpload, Files } from "lucide-react"
 import { useEffect } from "react" 
 import {
   Sidebar,
@@ -20,7 +20,7 @@ import { usePathname } from "next/navigation"
 
 const menuItems = [
   {
-    title: "Dashboard",
+    title: "Home",
     url: "/",
     icon: Home,
   },
@@ -30,6 +30,11 @@ const menuItems = [
     icon: CloudUpload,
   },
   {
+    title: "Files",
+    url: "/files",
+    icon: Files,
+  },
+/*   {
     title: "Deals",
     url: "/deals",
     icon: DollarSign,
@@ -53,7 +58,7 @@ const menuItems = [
     title: "Settings",
     url: "/settings",
     icon: Settings,
-  },
+  }, */
 ]
 
 export function AppSidebar() {

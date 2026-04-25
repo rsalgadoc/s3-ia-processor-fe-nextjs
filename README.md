@@ -30,5 +30,5 @@ This library is licensed under the MIT-0 License. See the LICENSE file.
 Windows PowerShell 
 
 ```shell
-$env:MY_CUSTOM_BUCKET_ARN="arn:aws:s3:::bucket-name"; echo "ARN cargado: $env:MY_CUSTOM_BUCKET_ARN"; npx ampx sandbox
+$env:MY_CUSTOM_BUCKET_ARN="arn:aws:s3:::name"; $env:MY_CUSTOM_OUTPUT_BUCKET_ARN="arn:aws:s3:::name"; npx ampx sandbox
 ```
