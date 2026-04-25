@@ -74,12 +74,12 @@ export function AppSidebar() {
 
   return (
      <Sidebar variant="sidebar" collapsible="icon" className="border-r">
-      <SidebarHeader className="p-6">
+      <SidebarHeader className="p-3">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Cloud className="h-4 w-4" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+            <Cloud className="h-3.5 w-3.5" />
           </div>
-          <span className="text-lg font-semibold">AWS Serverless Projects</span>
+          <span className="text-sm font-semibold">AWS SP</span>
         </div>
       </SidebarHeader>
       <SidebarContent>
