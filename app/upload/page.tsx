@@ -2,12 +2,15 @@
 
 import { StorageManager } from '@aws-amplify/ui-react-storage';
 import Link from 'next/link';
+import { Topbar } from "@/components/topbar"
+import { Button } from "@/components/ui/button"
 import '@aws-amplify/ui-react/styles.css';           // Estilos base de Amplify UI
 
 export default function UploadPage() {
 
   return (
-    <main>
+    <div className="flex flex-col min-h-screen">
+      <Topbar />
       <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
         <h1>Subir archivos a tu bucket S3 existente</h1>
 
@@ -39,12 +42,10 @@ export default function UploadPage() {
         </p>
       </div>
       <div style={{ marginTop: '20px' }}>
-        <Link href="/">
-          <button style={{ width: '100%', textAlign: 'center' }}>
-            Back to Home
-          </button>
-        </Link>
+        <Button asChild>
+          <Link href="/">Back to Home</Link>
+        </Button>
       </div>
-    </main>
+    </div>
   );
 }
