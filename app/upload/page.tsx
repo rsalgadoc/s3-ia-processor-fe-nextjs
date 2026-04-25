@@ -51,7 +51,7 @@ export default function UploadPage() {
             />
 
             <div className="flex justify-end">
-              <Button asChild variant="outline">
+              <Button asChild>
                 <Link href="/">Volver al Home</Link>
               </Button>
             </div>

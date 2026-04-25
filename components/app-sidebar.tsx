@@ -104,15 +104,15 @@ export function AppSidebar() {
         <div className="flex items-center gap-3">
           <Avatar className="h-8 w-8">
             <AvatarImage
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-              alt="John Doe"
+              src="/photo.jpg"
+              alt="Rodrigo Salgado"
               className="object-cover"
             />
-            <AvatarFallback>JD</AvatarFallback>
+            <AvatarFallback>RS</AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <span className="text-sm font-medium">John Doe</span>
-            <span className="text-xs text-muted-foreground">Sales Manager</span>
+            <span className="text-sm font-medium">Rodrigo Salgado</span>
+            <span className="text-xs text-muted-foreground">AWS Certified Developer</span>
           </div>
         </div>
       </SidebarFooter>

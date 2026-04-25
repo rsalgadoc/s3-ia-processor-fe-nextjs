@@ -24,7 +24,7 @@ export function Topbar() {
       <div className="flex items-center gap-4 flex-1 max-w-md">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-          <Input placeholder="Search deals, contacts, tasks..." className="pl-10" />
+          <Input placeholder="Search..." className="pl-10" />
         </div>
       </div>
 
@@ -65,11 +65,11 @@ export function Topbar() {
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
                 <AvatarImage
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-                  alt="John Doe"
+                  src="/photo.jpg"
+                  alt="Rodrigo Salgado"
                   className="object-cover"
                 />
-                <AvatarFallback>JD</AvatarFallback>
+                <AvatarFallback>RS</AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>

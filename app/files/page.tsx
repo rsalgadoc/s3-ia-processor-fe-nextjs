@@ -1,11 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { list } from 'aws-amplify/storage';
+import { list, getUrl } from 'aws-amplify/storage';
 import { Topbar } from "@/components/topbar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { FileIcon, FolderIcon, HardDrive } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { FileIcon, FolderIcon, HardDrive, Download } from "lucide-react"
 
 function formatFileSize(bytes: number): string {
   if (bytes === 0) return '0 B';
@@ -14,14 +14,45 @@ function formatFileSize(bytes: number): string {
   return `${(bytes / Math.pow(1024, i)).toFixed(1)} ${units[i]}`;
 }
 
-function getFileExtension(path: string): string {
-  const parts = path.split('.');
-  return parts.length > 1 ? parts[parts.length - 1].toUpperCase() : '—';
+function formatDate(date: Date | string | undefined): string {
+  if (!date) return '—';
+  const d = typeof date === 'string' ? new Date(date) : date;
+  return d.toLocaleDateString('es-CL', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 }
 
 function getFileName(path: string): string {
   const parts = path.split('/');
   return parts[parts.length - 1] || path;
+}
+
+async function downloadFile(filePath: string) {
+  try {
+    const { url } = await getUrl({
+      path: filePath,
+      options: {
+        bucket: 'output-bucket-externo',
+      },
+    });
+    // Forzar descarga usando fetch + blob para evitar que el navegador abra el archivo
+    const response = await fetch(url.toString());
+    const blob = await response.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    a.download = getFileName(filePath);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(blobUrl);
+  } catch (error) {
+    console.error('Error descargando archivo:', error);
+  }
 }
 
 export default function ListaArchivos() {
@@ -46,6 +77,12 @@ export default function ListaArchivos() {
     }
     fetchFiles();
   }, []);
+
+  const sortedFiles = [...files].sort((a, b) => {
+    const dateA = a.lastModified ? new Date(a.lastModified).getTime() : 0;
+    const dateB = b.lastModified ? new Date(b.lastModified).getTime() : 0;
+    return dateB - dateA; // más reciente primero
+  });
 
   const totalSize = files.reduce((acc, file) => acc + (file.size || 0), 0);
 
@@ -117,16 +154,27 @@ export default function ListaArchivos() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Nombre</TableHead>
-                  <TableHead>Tipo</TableHead>
+                  <TableHead className="w-[80px]">Descargar</TableHead>
+                  <TableHead className="hidden md:table-cell">Última Modificación</TableHead>
                   <TableHead className="text-right">Tamaño</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {files.map((file) => (
+                {sortedFiles.map((file) => (
                   <TableRow key={file.path}>
                     <TableCell className="font-medium">{getFileName(file.path)}</TableCell>
                     <TableCell>
-                      <Badge variant="secondary">{getFileExtension(file.path)}</Badge>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => downloadFile(file.path)}
+                        title="Descargar archivo"
+                      >
+                        <Download className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell text-muted-foreground">
+                      {formatDate(file.lastModified)}
                     </TableCell>
                     <TableCell className="text-right">{formatFileSize(file.size)}</TableCell>
                   </TableRow>

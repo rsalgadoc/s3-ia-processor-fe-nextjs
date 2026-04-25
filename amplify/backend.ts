@@ -94,6 +94,11 @@ const authPolicy = new Policy(customBucketStack, 'CustomBucketAuthPolicy', {
     }),
     new PolicyStatement({
       effect: Effect.ALLOW,
+      actions: ['s3:GetObject'], // Agrega esta acción
+      resources: [`${outputBucket.bucketArn}/resultados/public/*`],
+    }),
+    new PolicyStatement({
+      effect: Effect.ALLOW,
       actions: ['s3:ListBucket'],
       resources: [outputBucket.bucketArn],
       conditions: {
