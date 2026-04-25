@@ -1,29 +1,24 @@
-"use client";
+import { Topbar } from "@/components/topbar"
+import Image from "next/image"
 
-import { useAuthenticator } from "@aws-amplify/ui-react";
-import Link from 'next/link';
-import "./../app/app.css";
-import "@aws-amplify/ui-react/styles.css";
-
-
-
-export default function App() {
-  
-  const { signOut } = useAuthenticator();
-
+export default function Dashboard() {
   return (
-    <main>
-      <h1>S3 Image & Document Processor</h1>
+    <div className="flex flex-col min-h-screen">
+      <Topbar />
 
-
-      {/* Botón para navegar a /upload */}
-      <ul>  
-        <Link href="/upload">
-          <button style={{ width: '100%', display: 'block', textAlign: 'center' }}>Go to Upload</button>
-        </Link>
-      </ul>
-
-      <button onClick={signOut}>Sign out</button>
-    </main>
-  );
+      <div className="flex-1 flex items-center justify-center p-8 pt-6">
+        <div className="relative w-full max-w-4xl">
+          <Image
+            src="/aws-serverless-projects-diagram.png"
+            alt="AWS Serverless Projects Diagram"
+            width={1200}
+            height={800}
+            className="w-full h-auto rounded-lg shadow-lg"
+            priority
+          />
+        </div>
+      </div>
+    </div>
+  )
 }
+

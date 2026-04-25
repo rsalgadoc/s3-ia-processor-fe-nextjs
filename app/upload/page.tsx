@@ -2,49 +2,62 @@
 
 import { StorageManager } from '@aws-amplify/ui-react-storage';
 import Link from 'next/link';
-import '@aws-amplify/ui-react/styles.css';           // Estilos base de Amplify UI
+import { Topbar } from "@/components/topbar"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { CloudUpload } from "lucide-react"
+import '@aws-amplify/ui-react/styles.css';
 
 export default function UploadPage() {
 
   return (
-    <main>
-      <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
-        <h1>Subir archivos a tu bucket S3 existente</h1>
+    <div className="flex flex-col min-h-screen">
+      <Topbar />
 
-        <StorageManager
-          // === Configuración importante para tu bucket existente ===
-          path="public/"                          // ← debe coincidir con lo que definiste en backend.ts
-          // path={({ identityId }) => `protected/${identityId}/`} // Ejemplo si quieres carpetas por usuario
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="flex items-center justify-between space-y-2">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">Subir Archivos</h2>
+            <p className="text-sm text-muted-foreground mt-1">
+              Carga archivos a tu bucket S3
+            </p>
+          </div>
+        </div>
 
-          acceptedFileTypes={['image/*', '.pdf', '.doc', '.docx']} // tipos de archivos permitidos
-          maxFileCount={5}                        // máximo de archivos a la vez
-          maxFileSize={10 * 1024 * 1024}          // 10 MB por archivo (ajusta según necesites)
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CloudUpload className="h-5 w-5" />
+              Upload a S3
+            </CardTitle>
+            <CardDescription>
+              Los archivos se guardarán en la carpeta <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">public/</code> de tu bucket.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <StorageManager
+              path="public/"
+              acceptedFileTypes={['image/*', '.pdf', '.doc', '.docx']}
+              maxFileCount={5}
+              maxFileSize={10 * 1024 * 1024}
 
-          // isResumable={true}                   // Activa subida resumible (bueno para archivos grandes)
-          // showThumbnails={true}                // Muestra miniaturas (por defecto true para imágenes)
+              onUploadSuccess={({ key }) => {
+                console.log('✅ Archivo subido correctamente:', key);
+              }}
 
-          onUploadSuccess={({ key }) => {
-            console.log('✅ Archivo subido correctamente:', key);
-            alert(`Archivo subido: ${key}`);
-          }}
+              onUploadError={(error) => {
+                console.error('❌ Error al subir:', error);
+              }}
+            />
 
-          onUploadError={(error) => {
-            console.error('❌ Error al subir:', error);
-            alert('Hubo un error al subir el archivo');
-          }}
-        />
-
-        <p style={{ marginTop: '1rem', fontSize: '0.9rem', color: '#666' }}>
-          Los archivos se guardarán en la carpeta <strong>public/</strong> de tu bucket S3.
-        </p>
+            <div className="flex justify-end">
+              <Button asChild>
+                <Link href="/">Volver al Home</Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-      <div style={{ marginTop: '20px' }}>
-        <Link href="/">
-          <button style={{ width: '100%', textAlign: 'center' }}>
-            Back to Home
-          </button>
-        </Link>
-      </div>
-    </main>
+    </div>
   );
 }
